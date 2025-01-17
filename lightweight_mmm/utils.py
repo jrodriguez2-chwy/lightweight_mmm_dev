@@ -28,7 +28,9 @@ from scipy import spatial
 from scipy import stats
 from tensorflow.io import gfile
 
-from lightweight_mmm import media_transforms
+# Fixinf circular import for private use
+# from lightweight_mmm import media_transforms
+from media_transforms import calculate_seasonality, carryover
 
 
 def save_model(
@@ -120,7 +122,8 @@ def simulate_dummy_data(
   # Reduce the costs to make ROI realistic.
   costs = media_data[data_offset:].sum(axis=0) * .1
 
-  seasonality = media_transforms.calculate_seasonality(
+  # seasonality = media_transforms.calculate_seasonality(
+  seasonality = calculate_seasonality(  
       number_periods=data_size,
       degrees=2,
       frequency=52,
@@ -128,7 +131,8 @@ def simulate_dummy_data(
   target_noise = random.normal(key=sub_keys[2], shape=(data_size,)) + 3
 
   # media_data_transformed = media_transforms.adstock(media_data)
-  media_data_transformed = media_transforms.carryover(
+  # media_data_transformed = media_transforms.carryover(
+  media_data_transformed = carryover(  
       data=media_data,
       ad_effect_retention_rate=jnp.full((n_media_channels,), fill_value=.5),
       peak_effect_delay=jnp.full((n_media_channels,), fill_value=1.))

@@ -23,7 +23,9 @@ from sklearn import base
 
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 from statsmodels.tools.tools import add_constant
-from lightweight_mmm.core import core_utils
+
+# from lightweight_mmm.core import core_utils
+from core import core_utils
 
 
 class NotFittedScalerError(Exception):
